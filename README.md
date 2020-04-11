@@ -1,7 +1,7 @@
 # teaching_system
 
 >一个Vue.js项目
-rr
+
 ##构建设置
 
 ``` bash
