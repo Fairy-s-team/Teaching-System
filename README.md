@@ -1,8 +1,8 @@
 # teaching_system
 
-> A Vue.js project
-
-## Build Setup
+>一个Vue.js项目
+rr
+##构建设置
 
 ``` bash
 # install dependencies
