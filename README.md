@@ -1,7 +1,7 @@
 # teaching_system
 
 >一个Vue.js项目
-测试
+
 ## Build Setup
 
 ``` bash
