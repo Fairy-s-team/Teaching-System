@@ -1,0 +1,79 @@
+[
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "清华大学",
+        "pStatus" : "预备党员",
+        "title" : "副院长",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "四川师范大学",
+        "pStatus" : "预备党员",
+        "title" : "教授",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "清华大学",
+        "pStatus" : "预备党员",
+        "title" : "院长",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "清华大学",
+        "pStatus" : "党员",
+        "title" : "教授",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "四川师范大学",
+        "pStatus" : "预备党员",
+        "title" : "副教授",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "清华大学",
+        "pStatus" : "群众",
+        "title" : "教授",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    },
+    {
+        "name" : "崔凌云",
+        "birth" : "1998-12-6",
+        "degree" : "本科",
+        "wTime" : "2年",
+        "gSchool" : "北京大学",
+        "pStatus" : "预备党员",
+        "title" : "院长",
+        "tAwardTime" : "2020年",
+        "teachTime" : "80课时"
+    }
+]
