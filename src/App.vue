@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
+import PasswordBack from "./components/LiuCan/PasswordBack";
+import Login from "./components/LiuCan/Login";
 export default {
-  name: 'App'
-}
+  name: "App",
+  components: {
+    pass: PasswordBack,
+    login: Login
+  }
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
 </style>
+
+     
