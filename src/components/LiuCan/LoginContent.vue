@@ -16,6 +16,7 @@
             <div>
               <input
                 class="inputStyle setWidth setHeight"
+                maxlength="10"
                 v-model="userName"
                 type="text"
                 placeholder="请输入用户名"
@@ -27,6 +28,7 @@
                 class="inputStyle setWidth setHeight"
                 v-model="password"
                 type="text"
+                maxlength="10"
                 placeholder="请输入密码"
               />
             </div>
@@ -36,29 +38,36 @@
                 type="input"
                 class="inputStyle setHeight"
                 placeholder="请输入验证码"
+                maxlength="4"
                 v-model="mycode"
                 style="width：170px"
               />
-              <s-identify class="code" @click="refreshCode" :fresh="flag" @makedCode="getMakedCode"></s-identify>
+              <s-identify
+                class="code"
+                @click="refreshCode()"
+                :fresh="flag"
+                @makedCode="getMakedCode"
+              ></s-identify>
             </div>
             <!-- 单选框 -->
             <div id="chooseIdentify">
-              <input type="radio" name="identity" value="教师" style="zoom:120%;margin-left:30px;" />教师
+              <input type="radio" value="教师" v-model="identity" style="zoom:120%;margin-left:30px;" />教师
               <input
                 type="radio"
-                name="identity"
                 value="学生"
-                checked="checked"
+                v-model="identity"
                 style="zoom:120%;margin-left:85px;"
               />学生
             </div>
             <!-- 登录按钮 -->
-            <div>
-              <button type="submit" class="auth_login_btn" @click="login()">登录</button>
-            </div>
-            <!-- 忘记密码 -->
-            <small @click="gotolink" style="float:right;color:#169BD5;margin-top:5px;">忘记密码</small>
           </form>
+          <div>
+            <button type="submit" class="auth_login_btn" @click="login()">登录</button>
+          </div>
+          <!-- 忘记密码 -->
+          <label @click="gotolink" style="float:right;color:#169BD5;margin-top:5px;">
+            <small>忘记密码</small>
+          </label>
         </div>
       </div>
     </div>
@@ -75,25 +84,83 @@ export default {
     "s-identify": Code
   },
   data() {
+    let checkName = (rule, value, callback) => {
+      if (value == "") {
+        callabck(new Error("请输入用户名"));
+      } else {
+        callback();
+      }
+    };
     return {
-      userName: "",
-      password: "",
+      userName: "", //用户名
+      password: "", //密码
       identity: "", //获取到的用户身份
       flag: true, //该值变化，就会触发验证码刷新
       code: "", //刷新后的验证码
-      mycode: "" //用户输入的验证码
+      mycode: "", //用户输入的验证码
+      loginData: [], //获取到的json数据
+      isUser: false //判断是否存在这个用户
     };
   },
   mounted() {
     this.flag = !this.flag;
+    this.getData();
   },
   methods: {
     //忘记密码去到忘记密码页面
     gotolink() {
       this.$router.replace("/passwordback");
     },
+    getData() {
+      console.log("要开始获取数据了哦");
+      this.$http
+        .get("../../static/login.json")
+        .then(res => {
+          console.log(res.data);
+          this.loginData = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    vertify() {
+      console.log(this.userName);
+      for (var i = 0; i < this.loginData.length; i++) {
+        console.log(this.loginData[i].name);
+        if (this.userName == this.loginData[i].name) {
+          if (
+            this.password == this.loginData[i].password &&
+            this.identity == this.loginData[i].identity
+          ) {
+            this.isUser = true;
+            break;
+          }
+        }
+      }
+    },
     //登录
-    login() {},
+    login() {
+      this.vertify();
+      console.log(this.isUser);
+      if (this.mycode == this.code && this.isUser) {
+        alert("登陆成功！");
+        // 跳到下一个界面
+        if (this.identity == "学生") {
+          //this.$router.replace("/stu");
+        } else {
+          //this.$router.replace("/tea");
+        }
+      } else {
+        alert("登录失败！");
+        this.isUser = false;
+        this.password = "";
+        this.userName = "";
+        this.mycode = "";
+        this.refreshCode();
+      }
+    },
+
     //刷新验证码
     refreshCode() {
       this.flag = !this.flag;
@@ -107,108 +174,6 @@ export default {
 };
 </script>
 
-
-
-<style>
-#loginContent {
-  width: 100%;
-  height: 500px;
-  margin-top: 0px;
-}
-
-#bottom_color {
-  background-color: #8ba1b2;
-  background: rbga(138, 161, 178, 1);
-  filter: "progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F000000,endcolorstr=#7F000000)";
-  width: 1200px;
-  height: 450px;
-  padding: 0px;
-  margin: 135px auto;
-}
-
-#book {
-  height: 270px;
-  width: 180px;
-  opacity: 1;
-  margin-top: 95px;
-  margin-left: 180px;
-  float: left;
-  border-radius: 5px;
-}
-#information {
-  width: 480px;
-  height: 350px;
-  background-color: white;
-  margin-top: 50px;
-  margin-left: 150px;
-  position: relative;
-  float: left;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px 0 #8ba1b2;
-}
-
-#inputForm {
-  position: relative;
-  width: 300px;
-  height: 270px;
-  margin-left: 90px;
-  /* background-color: red; */
-}
-
-#logLabel {
-  font-size: 20px;
-  text-align: center;
-}
-
-.inputStyle {
-  border-radius: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ccc;
-  margin-top: 10px;
-  position: relative;
-}
-
-.setWidth {
-  width: 300px;
-}
-
-.setHeight {
-  height: 30px;
-}
-#chooseIdentify {
-  width: 300px;
-  height: 30px;
-  margin-top: 10px;
-}
-
-.setVertify {
-  position: absolute;
-  top: 90px;
-  left: 200px;
-  width: 100px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ccc;
-  margin-top: 10px;
-}
-
-.auth_login_btn {
-  color: black;
-  font-size: 20px;
-  border-radius: 3px;
-  border: 1px solid;
-  width: 300px;
-  border-color: #ccc;
-  border-radius: 10px;
-  background-color: transparent;
-}
-
-.code {
-  float: right;
-  margin-right: 70px;
-  margin-top: 10px;
-  width: 60px;
-  height: 30px;
-}
+<style scoped>
+@import "../../assets/css/Login.css";
 </style>

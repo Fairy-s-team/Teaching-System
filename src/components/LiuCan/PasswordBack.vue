@@ -22,12 +22,6 @@ export default {
 };
 </script>
 
-<style>
-#passwordback {
-  width: 100%;
-  height: 100%;
-  background-color: cadetblue;
-  background: -webkit-linear-gradient(top, #ffffff, #76a3c7) no-repeat;
-  position: absolute;
-}
+<style scoped>
+@import "../../assets/css/Login.css";
 </style>

@@ -22,30 +22,6 @@ export default {
 };
 </script>
 
-<style>
-#loginHeader {
-  width: 100%;
-  height: 120px;
-  position: absolute;
-}
-
-#schoolLogo {
-  width: 200px;
-  height: 50px;
-  padding-left: 200px;
-  padding-top: 10px;
-}
-
-#sysTitle {
-  margin-left: 580px;
-  color: #76a3c7;
-  font-weight: bold;
-  padding-top: 0px;
-  display: inline-block;
-  font-size: 30px;
-  width: 400px;
-  position: relative;
-  font-family: Britannic;
-  font-weight: bold;
-}
+<style scoped>
+@import "../../assets/css/Login.css";
 </style>

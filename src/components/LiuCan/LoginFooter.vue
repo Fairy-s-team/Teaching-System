@@ -9,11 +9,5 @@ export default {
 </script>
 
 <style scoped>
-#loginFooter {
-  width: 100%;
-  height: 50px;
-  text-align: center;
-  font-family: Oblique;
-  color: black;
-}
+@import "../../assets/css/Login.css";
 </style>
