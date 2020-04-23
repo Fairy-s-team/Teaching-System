@@ -111,6 +111,7 @@ export default {
     gotolink() {
       this.$router.replace("/passwordback");
     },
+    //获取json数据
     getData() {
       console.log("要开始获取数据了哦");
       this.$http
@@ -123,7 +124,7 @@ export default {
           console.log(err);
         });
     },
-
+    //验证
     vertify() {
       console.log(this.userName);
       for (var i = 0; i < this.loginData.length; i++) {
@@ -139,7 +140,7 @@ export default {
         }
       }
     },
-
+    //检查输入框是否为空
     checkNull() {
       this.ifName = false;
       this.ifPass = false;
