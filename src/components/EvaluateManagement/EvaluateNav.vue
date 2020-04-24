@@ -30,5 +30,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import "//src/assets/css/Evaluate.css";
+@import "../../assets/css/Evaluate.css";
 </style>

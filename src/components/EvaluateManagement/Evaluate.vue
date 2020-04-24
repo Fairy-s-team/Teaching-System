@@ -8,17 +8,12 @@
 <script>
 import EvaluateNav from "./EvaluateNav";
 import EvaluateContent from "./EvaluateContent";
-import EvaluateHeader from "./EvaluateHeader";
-import EvaluateFooter from "./EvaluateFooter";
-import EvaluateDetail from "./EvaluateDetail";
+
 export default {
   name: "Evaluate",
   components: {
     EvaluateNav,
-    EvaluateContent,
-    EvaluateHeader,
-    EvaluateFooter,
-    EvaluateDetail
+    EvaluateContent
   },
   data() {
     return {};
@@ -28,4 +23,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import "../../assets/css/Evaluate.css";
 </style>

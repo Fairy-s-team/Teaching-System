@@ -1,0 +1,26 @@
+[
+    {
+        "teacherNum": "张三",
+        "classNum": "数据结构"
+    },
+    {
+        "teacherNum": "李四",
+        "classNum": "数据结构"
+    },
+    {
+        "teacherNum": "王五",
+        "classNum": "Java"
+    },
+    {
+        "teacherNum": "赵二",
+        "classNum": "C"
+    },
+    {
+        "teacherNum": "孙五",
+        "classNum": "Java"
+    },
+    {
+        "teacherNum": "张三",
+        "classNum": "C"
+    }
+]
