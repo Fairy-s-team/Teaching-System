@@ -10,69 +10,63 @@
       <!-- 登录 -->
       <div id="information">
         <p id="logLabel">用户登录</p>
-        <div id="inputForm">
-          <form>
-            <!-- 用户名 -->
-            <div>
-              <input
-                class="inputStyle setWidth setHeight"
-                maxlength="10"
-                v-model="userName"
-                type="text"
-                placeholder="请输入用户名"
-              />
-            </div>
-            <label style="color:red;" v-if="ifName">请输入用户名!</label>
-            <!-- 密码 -->
-            <div>
-              <input
-                class="inputStyle setWidth setHeight"
-                v-model="password"
-                type="text"
-                maxlength="10"
-                placeholder="请输入密码"
-              />
-              <label style="color:red;" v-if="ifPass">请输入密码!</label>
-            </div>
-            <div>
-              <!-- 验证码 -->
-              <input
-                type="input"
-                class="inputStyle setHeight"
-                placeholder="请输入验证码"
-                maxlength="4"
-                v-model="mycode"
-                style="width：170px"
-              />
-              <s-identify
-                class="code"
-                @click="refreshCode()"
-                :fresh="flag"
-                @makedCode="getMakedCode"
-              ></s-identify>
-            </div>
-            <!-- 单选框 -->
-            <div id="chooseIdentify">
-              <input type="radio" value="教师" v-model="identity" style="zoom:120%;margin-left:30px;" />教师
-              <input
-                type="radio"
-                value="学生"
-                v-model="identity"
-                style="zoom:120%;margin-left:85px;"
-              />学生
-            </div>
-            <label style="color:red;" v-if="ifIdentity">请选择身份!</label>
 
-            <!-- 登录按钮 -->
-          </form>
-          <div>
-            <button type="submit" class="auth_login_btn" @click="login()">登录</button>
+        <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+          <!-- 用户名 -->
+          <el-form-item label="用户名：" prop="userName" style="padding-top:0px;">
+            <el-input
+              v-model="form.userName"
+              size="medium"
+              placeholder="请输入用户名"
+              style="width:300px;"
+              prefix-icon="el-icon-user"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="密码：" prop="password" style="padding-top:0px;">
+            <el-input
+              v-model="form.password"
+              size="medium"
+              placeholder="请输入密码"
+              prefix-icon="el-icon-key"
+              style="width:300px;"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="验证码：" prop="mycode" style="padding-top:0px;">
+            <el-input v-model="form.mycode" size="medium" placeholder="请输入验证码" style="width:150px;"></el-input>
+            <s-identify
+              class="code"
+              @click="refreshCode()"
+              :fresh="flag"
+              @makedCode="getMakedCode"
+              style="margin-right:132px;float:right;margin-top:2px"
+            ></s-identify>
+          </el-form-item>
+          <!-- 单选框 -->
+          <div id="chooseIdentify">
+            <input
+              type="radio"
+              name="status"
+              value="教师"
+              v-model="form.identity"
+              checked="checked"
+              style="margin-left:100px;"
+            />教师
+            <input
+              type="radio"
+              name="status"
+              value="学生"
+              v-model="form.identity"
+              style="margin-left:85px;"
+            />学生
           </div>
-          <!-- 忘记密码 -->
-          <label @click="gotolink" style="float:right;color:#169BD5;margin-top:5px;">
-            <small>忘记密码</small>
-          </label>
-        </div>
+          <el-form-item style="padding-top:0px;height:30px">
+            <el-button type="submit" size="small" class="auth_login_btn" @click="login()">登录</el-button>
+          </el-form-item>
+        </el-form>
+
+        <label @click="gotolink" style="color:#169BD5;margin-top:0px;padding-left:350px;">
+          <small>忘记密码</small>
+        </label>
       </div>
     </div>
   </div>
@@ -89,17 +83,43 @@ export default {
   },
   data() {
     return {
-      userName: "", //用户名
-      password: "", //密码
-      identity: "", //获取到的用户身份
+      form: {
+        userName: "", //用户名
+        password: "", //密码
+        identity: "", //获取到的用户身份
+        mycode: "" //用户输入的验证码
+      },
+
       flag: true, //该值变化，就会触发验证码刷新
-      code: "", //刷新后的验证码
-      mycode: "", //用户输入的验证码
+      code: "", //刷新后生成的验证码
       loginData: [], //获取到的json数据
       isUser: false, //判断是否存在这个用户
-      ifName: false,
-      ifPass: false,
-      ifIdentity: false
+      rules: {
+        userName: [
+          {
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+          }
+        ],
+        mycode: [
+          {
+            required: true,
+            message: "请输入验证码",
+            trigger: "blur"
+          }
+        ]
+      },
+
+      //如果登陆成功了，记录当前的用户
+      currentUser: ""
     };
   },
   mounted() {
@@ -126,13 +146,13 @@ export default {
     },
     //验证
     vertify() {
-      console.log(this.userName);
+      console.log(this.form.userName);
       for (var i = 0; i < this.loginData.length; i++) {
         console.log(this.loginData[i].name);
-        if (this.userName == this.loginData[i].name) {
+        if (this.form.userName == this.loginData[i].name) {
           if (
-            this.password == this.loginData[i].password &&
-            this.identity == this.loginData[i].identity
+            this.form.password == this.loginData[i].password &&
+            this.form.identity == this.loginData[i].identity
           ) {
             this.isUser = true;
             break;
@@ -141,43 +161,34 @@ export default {
       }
     },
     //检查输入框是否为空
-    checkNull() {
-      this.ifName = false;
-      this.ifPass = false;
-      this.ifIdentity = false;
-      if (this.userName == "") {
-        this.ifName = true;
-        return flase;
-      } else if (this.password == "") {
-        this.ifPass = true;
-        return flase;
-      } else if (this.identity == "") {
-        this.ifIdentity = true;
-        return flase;
-      } else {
-        return true;
-      }
-    },
+
     //登录
     login() {
-      if (this.checkNull()) {
-        this.vertify();
-        if (this.mycode == this.code && this.isUser) {
-          alert("登陆成功！");
-          // 跳到下一个界面
-          if (this.identity == "学生") {
-            //this.$router.replace("/stu");
-          } else {
-            //this.$router.replace("/tea");
-          }
+      this.vertify();
+      if (this.form.mycode == this.code && this.isUser) {
+        this.$message({
+          message: "登陆成功！",
+          type: "success"
+        });
+        //alert("登陆成功！");
+        this.currentUser = this.form.userName;
+        // 跳到下一个界面
+        if (this.form.identity == "学生") {
+          //this.$router.replace("/stu");
         } else {
-          alert("登录失败！");
-          this.isUser = false;
-          this.password = "";
-          this.userName = "";
-          this.mycode = "";
-          this.refreshCode();
+          //this.$router.replace("/tea");
         }
+      } else {
+        this.$message({
+          message: "登录失败！",
+          type: "warning"
+        });
+        //  alert("登录失败！");
+        this.isUser = false;
+        this.form.password = "";
+        this.form.userName = "";
+        this.form.mycode = "";
+        this.refreshCode();
       }
     },
 

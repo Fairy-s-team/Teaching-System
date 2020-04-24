@@ -45,36 +45,13 @@
     box-shadow: 5px 5px 5px 0 #8ba1b2;
   }
   
-  #inputForm {
-    position: relative;
-    width: 300px;
-    height: 270px;
-    margin-left: 90px;
-    /* background-color: red; */
-  }
   
   #logLabel {
     font-size: 20px;
     text-align: center;
   }
   
-  .inputStyle {
-    border-radius: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #ccc;
-    margin-top: 10px;
-    position: relative;
-    text-align: center;
-  }
   
-  .setWidth {
-    width: 300px;
-  }
-  
-  .setHeight {
-    height: 30px;
-  }
   #chooseIdentify {
     width: 300px;
     height: 30px;

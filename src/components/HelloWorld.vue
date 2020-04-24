@@ -7,7 +7,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      //  msg: '教学质量评估管理系统'
+      msg: "教学质量评估管理系统"
     };
   }
 };
