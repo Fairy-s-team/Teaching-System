@@ -1,13 +1,12 @@
 
 <template>
-  <div id="archivesManagement">
+  <div id="delArchives">
     <ManagementNav />
     <div class="rightItem">
       <ManagementHeader :searchable=searchable></ManagementHeader>
       <ManagementContent :isdel=showdel :isEdit=showedit></ManagementContent>
       <ManagementFooter />
     </div>
-    
   </div>
 </template>
 
@@ -17,7 +16,7 @@ import ManagementContent from './ManagementContent'
 import ManagementHeader from './ManagementHeader'
 import ManagementFooter from './ManagementFooter'
 export default {
-  name: 'Management',
+  name: 'DelArchives',
   components: {
     ManagementNav,
     ManagementContent,
@@ -26,7 +25,7 @@ export default {
   },
   data () {
     return {
-      showdel: false,
+      showdel: true,
       searchable: true,
       showedit: false
     }

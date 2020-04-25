@@ -9,7 +9,11 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    // 打包项目时，需要把assetsPublicPath路径改为'./'
+    // 如果本地调试项目时，建议将build里的assetsPublicPath的路径改为'/'
+    // 因为打包后，外部引入js和css文件时，如果路径以'./'会获取不到
+    // 但在服务器上，assetsPublicPath路径为'./'是没问题的
+    assetsPublicPath: '/',
     proxyTable: {},
 
     // Various Dev Server settings

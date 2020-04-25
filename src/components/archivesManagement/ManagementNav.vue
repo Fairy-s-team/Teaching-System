@@ -9,20 +9,21 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      default-active="0">
-      <el-menu-item index="0" class="navList">
+      router
+      :default-active="$route.path">
+      <el-menu-item index="/api/document/" class="navList">
         <i class="el-icon-folder-opened"></i>
         <span slot="title">全部档案</span>
       </el-menu-item>
-      <el-menu-item index="1" class="navList">
+      <el-menu-item index="/api/document/add/" class="navList">
         <i class="el-icon-plus"></i>
         <span slot="title">添加档案</span>
       </el-menu-item>
-      <el-menu-item index="2" class="navList">
+      <el-menu-item index="/api/document/edit/" class="navList">
         <i class="el-icon-edit"></i>
         <span slot="title">编辑档案</span>
       </el-menu-item>
-      <el-menu-item index="3" class="navList">
+      <el-menu-item index="/api/document/del/" class="navList">
         <i class="el-icon-delete"></i>
         <span slot="title">删除档案</span>
       </el-menu-item>
@@ -43,29 +44,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#nav {
-  user-select: none;
-  width: 15%;
-  height: 100vh;
-  float: left;
-  background-color: #545c64;
-  overflow: hidden;
-}
-.info {
-  text-align: center;
-  padding: 30px 0 25px 0;
-  color: #fff;
-  font-size: 20px;
-}
-.info>i {
-  padding-right: 15px;
-  transform: scale(1.4);
-}
-.navList {
-  width: 100%;
-  text-align: center;
-}
-.el-menu-vertical-demo {
-  margin-right: -1px;
-}
+@import "../../assets/css/archivesManagement.css";
 </style>

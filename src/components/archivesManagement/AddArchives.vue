@@ -1,34 +1,42 @@
 
 <template>
-  <div id="archivesManagement">
+  <div id="addArchives">
     <ManagementNav />
     <div class="rightItem">
       <ManagementHeader :searchable=searchable></ManagementHeader>
-      <ManagementContent :isdel=showdel :isEdit=showedit></ManagementContent>
+      <MContentAdd :editObj=editObj ></MContentAdd>
       <ManagementFooter />
     </div>
-    
   </div>
 </template>
 
 <script>
 import ManagementNav from './ManagementNav'
-import ManagementContent from './ManagementContent'
+import MContentAdd from './MContentAdd'
 import ManagementHeader from './ManagementHeader'
 import ManagementFooter from './ManagementFooter'
 export default {
-  name: 'Management',
+  name: 'AddArchives',
   components: {
     ManagementNav,
-    ManagementContent,
+    MContentAdd,
     ManagementHeader,
     ManagementFooter
   },
   data () {
     return {
-      showdel: false,
-      searchable: true,
-      showedit: false
+      searchable: false,
+      editObj: {
+        teacherName: '',
+        birthday: '',
+        education: '',
+        worktime: '',
+        graduateSchool: '',
+        politicalStatus: '0',
+        title: '',
+        titleGivenTime: '',
+        workingHours: ''
+      }
     }
   }
 }
