@@ -13,13 +13,14 @@
 
         <el-form :model="form" :rules="rules" ref="form" label-width="100px">
           <!-- 用户名 -->
-          <el-form-item label="用户名：" prop="userName" style="padding-top:0px;">
+          <el-form-item label="学号：" prop="userName" style="padding-top:0px;">
             <el-input
               v-model="form.userName"
               size="medium"
               placeholder="请输入用户名"
               style="width:300px;"
               prefix-icon="el-icon-user"
+              maxlength="10"
             ></el-input>
           </el-form-item>
           <el-form-item label="密码：" prop="password" style="padding-top:0px;">
@@ -29,10 +30,17 @@
               placeholder="请输入密码"
               prefix-icon="el-icon-key"
               style="width:300px;"
+              maxlength="10"
             ></el-input>
           </el-form-item>
           <el-form-item label="验证码：" prop="mycode" style="padding-top:0px;">
-            <el-input v-model="form.mycode" size="medium" placeholder="请输入验证码" style="width:150px;"></el-input>
+            <el-input
+              v-model="form.mycode"
+              size="medium"
+              maxlength="4"
+              placeholder="请输入验证码"
+              style="width:150px;"
+            ></el-input>
             <s-identify
               class="code"
               @click="refreshCode()"
@@ -49,12 +57,14 @@
               value="教师"
               v-model="form.identity"
               checked="checked"
+              @select="getdata()"
               style="margin-left:100px;"
             />教师
             <input
               type="radio"
               name="status"
               value="学生"
+              @select="getdata()"
               v-model="form.identity"
               style="margin-left:85px;"
             />学生
@@ -82,6 +92,38 @@ export default {
     "s-identify": Code
   },
   data() {
+    var checkUserName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入学号/教职工号"));
+      } else {
+        var numberReg = /^[0-9]*$/;
+        if (!numberReg.test(value)) {
+          callback(new Error("学号或职工号只能为数字！"));
+        } else {
+          callback();
+        }
+      }
+    };
+
+    var checkPassword = (rule, value, callback) => {
+      var noChangeReg = /^[0-9]*$/;
+      var hasChangeReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+      if (!noChangeReg.test(value) && !hasChangeReg.test(value)) {
+        callback(new Error("密码输入格式有误"));
+      } else {
+        callback();
+      }
+    };
+
+    var checkVertify = (rule, value, callback) => {
+      var vertifyCodeReg = /^[0-9]*$/;
+      if (!vertifyCodeReg.test(value)) {
+        callback(new Error("验证码只能为数字！"));
+      } else {
+        callback();
+      }
+    };
+
     return {
       form: {
         userName: "", //用户名
@@ -93,28 +135,24 @@ export default {
       flag: true, //该值变化，就会触发验证码刷新
       code: "", //刷新后生成的验证码
       loginData: [], //获取到的json数据
+      teaData: [], //老师信息
+      stuData: [], //学生信息
       isUser: false, //判断是否存在这个用户
+      isTeacher: false, //判断是否为老师
+      //输入规则
       rules: {
         userName: [
-          {
-            required: true,
-            message: "请输入用户名",
-            trigger: "blur"
-          }
+          { required: true, validator: checkUserName, trigger: "blur" },
+          { max: 10, min: 5, message: "学号或教职工号最少5位" }
         ],
         password: [
-          {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur"
-          }
+          { required: true, message: "请输入密码！", trigger: "blur" },
+          { max: 10, message: "密码长度不超过10位！" },
+          { validator: checkPassword, trigger: "blur" }
         ],
         mycode: [
-          {
-            required: true,
-            message: "请输入验证码",
-            trigger: "blur"
-          }
+          { required: true, message: "请输入验证码!", trigger: "blur" },
+          { validator: checkVertify, trigger: "blur" }
         ]
       },
 
@@ -133,62 +171,104 @@ export default {
     },
     //获取json数据
     getData() {
-      console.log("要开始获取数据了哦");
       this.$http
-        .get("../../static/login.json")
+        .get("../../static/teacher.json")
         .then(res => {
           console.log(res.data);
-          this.loginData = res.data;
+          this.teaData = res.data;
         })
         .catch(err => {
           console.log(err);
         });
+
+      this.$http
+        .get("../../static/student.json")
+        .then(res => {
+          console.log(res.data);
+          this.stuData = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      console.log(this.loginData);
+      console.log("getdata函数");
     },
-    //验证
-    vertify() {
-      console.log(this.form.userName);
-      for (var i = 0; i < this.loginData.length; i++) {
-        console.log(this.loginData[i].name);
-        if (this.form.userName == this.loginData[i].name) {
-          if (
-            this.form.password == this.loginData[i].password &&
-            this.form.identity == this.loginData[i].identity
-          ) {
-            this.isUser = true;
+
+    //登录失败返回信息并且清空表单
+    failLogin(mes) {
+      this.$message({
+        message: mes,
+        type: "warning"
+      });
+      this.$refs.form.resetFields();
+      this.refreshCode();
+    },
+
+    //登录
+    login() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.form.mycode == this.code) {
+            if (this.form.identity == "教师") {
+              this.teacherLogin();
+            } else if (this.form.identity == "学生") {
+              this.studentLogin();
+            } else {
+              this.failLogin("未选择身份！");
+            }
+          } else {
+            this.failLogin("验证码错误！");
+          }
+        } else {
+          this.failLogin("请检查输入格式是否正确！");
+        }
+      });
+
+      if (this.isUser) {
+        this.$message({
+          message: "登陆成功！",
+          type: "success"
+        });
+        this.isUser = false;
+
+        //alert("登陆成功！");
+        this.currentUser = this.form.userName;
+        // 跳到下一个界面
+        if (this.isTeacher) {
+          //跳到老师
+
+          this.isTeacher = false;
+        } else {
+          //跳到学生
+        }
+      } else {
+        console.log("llll");
+        console.log(this.loginData);
+        this.failLogin("登录失败！");
+      }
+    },
+    //获取老师的数据并判断是否一致
+    teacherLogin() {
+      for (var i = 0; i < this.teaData.length; i++) {
+        console.log(this.teaData[i].teacherId);
+        if (this.form.userName == this.teaData[i].teacherId) {
+          if (this.form.password == this.teaData[i].password) {
+            this.isUser = true; //如果信息匹配那么设置isUser为真
+            this.isTeacher = true;
             break;
           }
         }
       }
     },
-    //检查输入框是否为空
-
-    //登录
-    login() {
-      this.vertify();
-      if (this.form.mycode == this.code && this.isUser) {
-        this.$message({
-          message: "登陆成功！",
-          type: "success"
-        });
-        //alert("登陆成功！");
-        this.currentUser = this.form.userName;
-        // 跳到下一个界面
-        if (this.form.identity == "学生") {
-          //this.$router.replace("/stu");
-        } else {
-          //this.$router.replace("/tea");
+    //获取学生的数据并判断是否一致
+    studentLogin() {
+      for (var i = 0; i < this.stuData.length; i++) {
+        if (this.form.userName == this.stuData[i].stuId) {
+          if (this.form.password == this.stuData[i].password) {
+            this.isUser = true; //如果信息匹配那么设置isUser为真
+            break;
+          }
         }
-      } else {
-        this.$message({
-          message: "登录失败！",
-          type: "warning"
-        });
-        //  alert("登录失败！");
-        this.isUser = false;
-        this.form.password = "";
-        this.form.userName = "";
-        this.form.mycode = "";
-        this.refreshCode();
       }
     },
 

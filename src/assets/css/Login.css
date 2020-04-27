@@ -15,8 +15,7 @@
   }
   
   #bottom_color {
-    background-color: #8ba1b2;
-    background: rbga(138, 161, 178, 1);
+    background:rgb(157,175,189,0.2);
     filter: "progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F000000,endcolorstr=#7F000000)";
     width: 1200px;
     height: 450px;
@@ -111,7 +110,7 @@
   #schoolLogo {
     width: 200px;
     height: 50px;
-    padding-left: 200px;
+    padding-left: 160px;
     padding-top: 10px;
   }
   
@@ -126,6 +125,7 @@
     position: relative;
     font-family: Britannic;
     font-weight: bold;
+    
   }
   
   /* 找回密码页面 */
