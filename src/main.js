@@ -7,10 +7,12 @@ import 'font-awesome/css/font-awesome.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
+import store from './store/index';
 
 Vue.prototype.$http=axios
 
 Vue.use(ElementUI)
+Vue.use(store)
 
 Vue.config.productionTip = false
 
@@ -18,6 +20,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

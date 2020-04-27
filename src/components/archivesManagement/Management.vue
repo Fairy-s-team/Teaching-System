@@ -3,8 +3,8 @@
   <div id="archivesManagement">
     <ManagementNav />
     <div class="rightItem">
-      <ManagementHeader :searchable=searchable></ManagementHeader>
-      <ManagementContent :isdel=showdel :isEdit=showedit></ManagementContent>
+      <ManagementHeader :searchable=searchable />
+      <ManagementContent :isdel=showdel :isEdit=showedit />
       <ManagementFooter />
     </div>
     
@@ -28,7 +28,8 @@ export default {
     return {
       showdel: false,
       searchable: true,
-      showedit: false
+      showedit: false,
+      // currentUser: this.$route.params.currentUser,
     }
   }
 }

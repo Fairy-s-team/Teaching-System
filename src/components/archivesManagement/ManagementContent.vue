@@ -201,6 +201,7 @@ export default {
       rows.splice(index, 1);
     },
     deleteAllRow(rows) {
+      console.log("删除了所有数据！");
       rows.splice(0, rows.length);
     },
     editRow(row) {
@@ -213,11 +214,13 @@ export default {
     },
     getData() {
       console.log("要开始获取数据了哦");
+      // ------------- 获取教师档案信息 --------------
       this.$http.get('../../static/archivesTest.json')
       .then(res => {
         console.log(res.data);
         this.tableData = res.data;
         this.totalNum = this.tableData.length;
+        this.$emit('getDatas', this.tableData);
       })
       .catch(err => {
         console.log(err);

@@ -42,7 +42,7 @@
             </el-form-item>
         </el-form>
         <div id="signOut">
-            <el-popconfirm title="确定要退出吗？">
+            <el-popconfirm title="确定要退出吗？" @onConfirm="signOutEvent">
                 <el-button 
                     slot="reference"
                     type="text"
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import store from '@/store';
 export default {
   name: 'ManagementHeader',
   data () {
@@ -80,7 +81,7 @@ export default {
             { value: '4', label: '其他' }
         ],
         titleSelect: -1,     // 当前选中的职称
-        degreeSelect: -1     // 当前选中的学历
+        degreeSelect: -1,    // 当前选中的学历
     }
   },
   props: {
@@ -92,36 +93,34 @@ export default {
   methods: {
       onSubmit() {
         console.log("开始查找...");
-        console.log(this.titleSelect);
-        console.log(this.degreeSelect);
-        if(this.titleSelect==-1 && this.degreeSelect==-1) {
+        let titleSelect = this.titleSelect;
+        let degreeSelect = this.degreeSelect;
+        if(titleSelect==-1 && degreeSelect==-1) {
             this.$message.error('请选择查询条件后进行查询！');
         }
-        else if(this.titleSelect!=-1 && this.degreeSelect==-1) {
+        else if(titleSelect!=-1 && degreeSelect==-1) {
             // 只选择职称查询
-            this.$http.get('../../static/archivesTest.json')
-            .then(res => {
-                console.log(res.data);
-                this.tableData = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
         }
         else if(this.titleSelect==-1 && this.degreeSelect!=-1) {
             // 只选择学历查询
         }
         else {
-            // 都选
+            // 都选查询
         }
       },
       selectTitleGet(val) {
-          this.titleSelect = val;
-          console.log("当前选中职称："+this.titleSelect);
+        this.titleSelect = val;
+        console.log("当前选中职称："+this.titleSelect);
       },
       selectDegreeGet(val) {
-          this.degreeSelect = val;
-          console.log("当前选中学历："+this.degreeSelect);
+        this.degreeSelect = val;
+        console.log("当前选中学历："+this.degreeSelect);
+      },
+      signOutEvent() {
+        // 退出登录
+        store.state.loginData[1].userNum = '未登录',
+        store.state.loginData[1].token = false,
+        this.$router.replace("/api/user");
       }
   }
 }

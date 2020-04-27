@@ -95,13 +95,11 @@
                     </el-col>
                 </el-row>
             </el-form>
-            <!-- {{editObj}} -->
         </div>
     </div>
 </template>
 
 <script>
-// import eventBus from '../../assets/editEventBus'
 export default {
   name: 'MContentAdd',
   data() {
@@ -132,29 +130,62 @@ export default {
     editObj: {
       type: Object,
       required: true
+    },
+    editStatus: {
+      type: Boolean,
+      required: true
     }
   },
-  
-    // this.$watch('editObj', function() {
-    //   this.form = this.editObj;
-    //   console.log(editObj);
-    // });
   methods: {
     onSubmit() {
-      console.log('submit!');
-      // 向父组件传值
-      let editable = false;
-      this.$emit('editEnd', editable);
-      this.$router.push('./');
-      console.log(this.form);
+      console.log('提交档案信息!');
+      console.log('现在提交的表中信息是：');
+      console.log(this.editObj);
+      if(this.verifyData()) {
+        // --------- 验证通过，上传数据 ---------
+
+
+        this.$message({
+            message: "提交成功！",
+            type: "success"
+        });
+        if(this.editStatus){
+            // 编辑结束-向父组件传值并跳转到编辑列表
+            let editable = false;
+            this.$emit('editEnd', editable);
+            this.$router.replace('./');
+        } else {
+            // 添加档案结束-清空表中数据
+            this.editObj.teacherName = "";
+            this.editObj.birthday = '';
+            this.editObj.education = '';
+            this.editObj.worktime = '';
+            this.editObj.graduateSchool = '';
+            this.editObj.politicalStatus = '0';
+            this.editObj.title = '';
+            this.editObj.titleGivenTime = '';
+            this.editObj.workingHours = '';
+        }
+      }
+    },
+    verifyData() {
+      let name = this.editObj.teacherName;
+      let birth = this.editObj.birth;
+      let edu = this.editObj.education;
+      let wTime = this.editObj.worktime;
+      let gSchool = this.editObj.graduateSchool;
+      let pStatus = this.editObj.politicalStatus;
+      let title = this.editObj.title;
+      let titleGivenTime = this.editObj.titleGivenTime;
+      let workingHours = this.editObj.workingHours;
+      if(name=="" || birth=="" || edu=="" || wTime=="" || gSchool=="" || pStatus=="" || title=="" || titleGivenTime=="" || workingHours=="") {
+        this.$message({
+          message: "信息有空，提交失败！",
+          type: "warning"
+        });
+      }
     }
   },
-//   getEditData() {
-//     eventBus.$on("selectRowData",function(data) {
-//     this.editDataObj = data;
-//     })
-//     console.log("获取到的需要编辑的对象是"+this.editDataObj);
-//   }
 }
 </script>
 

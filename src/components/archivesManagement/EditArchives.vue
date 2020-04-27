@@ -5,7 +5,7 @@
     <div class="rightItem">
       <ManagementHeader :searchable=searchable></ManagementHeader>
       <ManagementContent :isdel=isdel :isEdit=showedit v-on:startEdit="startEdit" v-if="!stEdit"></ManagementContent>
-      <MContentAdd :editObj=editItemObj v-on:editEnd="editEnd" v-if="stEdit"></MContentAdd>
+      <MContentAdd :editObj=editItemObj :editStatus=editStatus v-on:editEnd="editEnd" v-if="stEdit"></MContentAdd>
       <ManagementFooter />
     </div>
   </div>
@@ -32,7 +32,8 @@ export default {
       showedit: true,     // 向子组件-显示编辑
       isdel: false,       // 向子组件-显示删除
       stEdit: false,      // 接收-控制编辑
-      editItemObj: {}
+      editItemObj: {},
+      editStatus: true    // 记录当前是编辑状态还是添加状态
     }
   },
   methods: {

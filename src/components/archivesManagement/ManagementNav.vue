@@ -2,7 +2,7 @@
   <div id="nav">
     <div class="info">
       <i class="fa fa-address-book-o"></i>
-      <span>201711303</span>
+      <span>{{currentUser}}</span>
     </div>
     <el-menu 
       class="el-menu-vertical-demo"
@@ -11,7 +11,7 @@
       active-text-color="#ffd04b"
       router
       :default-active="$route.path">
-      <el-menu-item index="/api/document/" class="navList">
+      <el-menu-item index="/api/document" class="navList">
         <i class="el-icon-folder-opened"></i>
         <span slot="title">全部档案</span>
       </el-menu-item>
@@ -32,13 +32,15 @@
 </template>
 
 <script>
+import store from '@/store';
 export default {
   name: 'ManagementNav',
   data () {
     return {
-      
+      // store存储当前登录的用户
+      currentUser: store.state.loginData[1].userNum
     }
-  }
+  },
 }
 </script>
 

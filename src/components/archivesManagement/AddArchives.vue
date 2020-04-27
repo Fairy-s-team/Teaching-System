@@ -4,7 +4,7 @@
     <ManagementNav />
     <div class="rightItem">
       <ManagementHeader :searchable=searchable></ManagementHeader>
-      <MContentAdd :editObj=editObj ></MContentAdd>
+      <MContentAdd :editObj=editObj :editStatus=editStatus></MContentAdd>
       <ManagementFooter />
     </div>
   </div>
@@ -36,7 +36,8 @@ export default {
         title: '',
         titleGivenTime: '',
         workingHours: ''
-      }
+      },
+      editStatus: false // 记录当前是编辑状态还是添加状态
     }
   }
 }
