@@ -5,19 +5,28 @@ import EvaluateDetail from '@/components/EvaluateManagement/EvaluateDetail'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Evaluate',
+      redirect: "/api/rank"
+    },
+    {
+      path: '/api/rank',
+      name: 'Rank',
       component: Evaluate
     },
-
-    // 评价传参路由信息
     {
-      path: '/EvaluateDetail/',
-      name: 'EvaluateDetail',
+      path: '/rank/detail',
+      name: 'RankDetail',
       component: EvaluateDetail
     }
   ]
 })
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
+export default router

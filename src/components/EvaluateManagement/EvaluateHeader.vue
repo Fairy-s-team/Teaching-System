@@ -3,28 +3,39 @@
     <div class="FormBlock">
       <el-form :inline="true" :model="form" label-width="80px" class="demo-form-inline">
         <el-form-item label="任课老师" class="selectBlock">
-          <el-select v-model="form.title" placeholder="请选择职称">
+          <el-autocomplete
+            class="inline-input"
+            v-model="inputName"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入教师姓名"
+          ></el-autocomplete>
+        </el-form-item>
+
+        <!-- <el-form-item label="任课老师" class="selectBlock">
+          <el-select v-model="form.title" placeholder="请选择教师名">
             <el-option label="张三" value="0"></el-option>
             <el-option label="李四" value="1"></el-option>
             <el-option label="王五" value="2"></el-option>
             <el-option label="赵二" value="3"></el-option>
             <el-option label="孙五" value="4"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="课程名" class="selectBlock">
-          <el-select v-model="form.degree" placeholder="请选择学历">
+          <el-select v-model="form.degree" placeholder="请选择课程名">
             <el-option label="C" value="0"></el-option>
             <el-option label="数据结构" value="1"></el-option>
             <el-option label="C++" value="2"></el-option>
             <el-option label="Java" value="3"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-tooltip class="item" effect="dark" content="搜索" placement="bottom">
-            <el-button type="primary" @click="onSubmit" id="search">
+            <el-button type="primary" @click="onSubmit()" id="search">
               <i class="fa fa-search"></i>
             </el-button>
-          </el-tooltip>
+        </el-tooltip>-->
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
       <div id="signOut">
