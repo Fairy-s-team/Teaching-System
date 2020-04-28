@@ -6,8 +6,8 @@
       stripe
       id="evaluateTable"
     >
-      <el-table-column prop="teacherName" label="教师姓名" width="120" align="center"></el-table-column>
-      <el-table-column prop="className" label="课程名" width="120" align="center"></el-table-column>
+      <el-table-column prop="teacherName" label="教师姓名" width="260" align="center"></el-table-column>
+      <el-table-column prop="className" label="课程名" width="280" align="center"></el-table-column>
       <!-- <el-table-column prop="evaluate" label="去评价" width="110" align="center">
         <template slot-scope="scope">
           <el-popconfirm
@@ -24,7 +24,7 @@
           </el-popconfirm>
         </template>
       </el-table-column>-->
-      <el-table-column prop="evaluate" label="去评价" width="110" align="center">
+      <el-table-column prop="evaluate" label="去评价" width="260" align="center">
         <template slot-scope="scope">
           <el-button
             @click="evaluateRow(scope.row)"
