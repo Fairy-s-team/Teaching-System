@@ -4,7 +4,7 @@
       <i class="fa fa-address-book-o"></i>
       <span>{{currentUser}}</span>
     </div>
-    <el-menu 
+    <el-menu
       class="el-menu-vertical-demo"
       background-color="#545c64"
       text-color="#fff"
@@ -32,19 +32,20 @@
 </template>
 
 <script>
-import store from '@/store';
-export default {
-  name: 'ManagementNav',
-  data () {
-    return {
-      // store存储当前登录的用户
-      currentUser: store.state.loginData[1].userNum
-    }
-  },
-}
+  import store from '@/store';
+
+  export default {
+    name: 'ManagementNav',
+    data() {
+      return {
+        // store存储当前登录的用户
+        currentUser: store.state.loginData[1].userNum
+      }
+    },
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import "../../assets/css/archivesManagement.css";
+  @import "../../assets/css/archivesManagement.css";
 </style>

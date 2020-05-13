@@ -1,46 +1,47 @@
-
 <template>
   <div id="addArchives">
     <ManagementNav />
     <div class="rightItem">
-      <ManagementHeader :searchable=searchable></ManagementHeader>
-      <MContentAdd :editObj=editObj :editStatus=editStatus></MContentAdd>
+      <ManagementHeader :searchable="searchable"></ManagementHeader>
+      <MContentAdd :editObj="editObj" :editStatus="editStatus"></MContentAdd>
       <ManagementFooter />
     </div>
   </div>
 </template>
 
 <script>
-import ManagementNav from './ManagementNav'
-import MContentAdd from './MContentAdd'
-import ManagementHeader from './ManagementHeader'
-import ManagementFooter from './ManagementFooter'
+import ManagementNav from "./ManagementNav";
+import MContentAdd from "./MContentAdd";
+import ManagementHeader from "./ManagementHeader";
+import ManagementFooter from "./ManagementFooter";
+
 export default {
-  name: 'AddArchives',
+  name: "AddArchives",
   components: {
     ManagementNav,
     MContentAdd,
     ManagementHeader,
     ManagementFooter
   },
-  data () {
+  data() {
     return {
       searchable: false,
       editObj: {
-        teacherName: '',
-        birthday: '',
-        education: '',
-        worktime: '',
-        graduateSchool: '',
-        politicalStatus: '0',
-        title: '',
-        titleGivenTime: '',
-        workingHours: ''
+        teacherId: "",
+        teacherName: "",
+        birthday: new Date(),
+        education: "其他",
+        workTime: 0,
+        graduateSchool: "",
+        politicalStatus: "其他",
+        title: "其他",
+        titleGivenTime: new Date(),
+        workingHours: 0
       },
       editStatus: false // 记录当前是编辑状态还是添加状态
-    }
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

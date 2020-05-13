@@ -11,24 +11,24 @@
 </template>
 
 <script>
-// 引入组件
-import LoginHeader from "./LoginHeader";
-import LoginContent from "./LoginContent";
-import LoginFooter from "./LoginFooter";
+  // 引入组件
+  import LoginHeader from "./LoginHeader";
+  import LoginContent from "./LoginContent";
+  import LoginFooter from "./LoginFooter";
 
-export default {
-  name: "Login",
-  components: {
-    "login-header": LoginHeader,
-    "login-content": LoginContent,
-    "login-footer": LoginFooter
-  },
-  mounted(){
-    // console.log("test store:", this.$store);
-  }
-};
+  export default {
+    name: "Login",
+    components: {
+      "login-header": LoginHeader,
+      "login-content": LoginContent,
+      "login-footer": LoginFooter
+    },
+    mounted() {
+      // console.log("test store:", this.$store);
+    }
+  };
 </script>
 
 <style scoped>
-@import "../../assets/css/Login.css";
+  @import "../../assets/css/Login.css";
 </style>

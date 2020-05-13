@@ -9,19 +9,19 @@
 </template>
 
 <script>
-//引入组件
-import LoginHeader from "./LoginHeader";
-import passwordBackContent from "./PasswordBackContent";
+  //引入组件
+  import LoginHeader from "./LoginHeader";
+  import passwordBackContent from "./PasswordBackContent";
 
-export default {
-  name: "passwordBack",
-  components: {
-    "pass-header": LoginHeader,
-    "passback-content": passwordBackContent
-  }
-};
+  export default {
+    name: "passwordBack",
+    components: {
+      "pass-header": LoginHeader,
+      "passback-content": passwordBackContent
+    }
+  };
 </script>
 
 <style scoped>
-@import "../../assets/css/Login.css";
+  @import "../../assets/css/Login.css";
 </style>

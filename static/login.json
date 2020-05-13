@@ -1,17 +1,17 @@
 [
-    {
-        "idNum": "2017110324",
-        "password": "liucan666",
-        "identity": "1"
-    },
-    {
-        "idNum": "2017110303",
-        "password": "kiki666",
-        "identity": "0"
-    },
-    {
-        "idNum": "2017110358",
-        "password": "wuzhe666",
-        "identity": "0"
-    }
+  {
+    "idNum": "2017110324",
+    "password": "liucan666",
+    "identity": "1"
+  },
+  {
+    "idNum": "2017110303",
+    "password": "kiki666",
+    "identity": "0"
+  },
+  {
+    "idNum": "2017110358",
+    "password": "wuzhe666",
+    "identity": "0"
+  }
 ]

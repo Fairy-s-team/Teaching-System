@@ -14,7 +14,7 @@ import store from '../store'
 
 Vue.use(Router)
 
-let router =  new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -95,8 +95,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.loginData[0].token === true) {
       console.log("学生登录了");
       next();
-    }
-    else if (store.state.loginData[1].token === true) {
+    } else if (store.state.loginData[1].token === true) {
       console.log("教师登录了");
       next();
     }
@@ -107,8 +106,7 @@ router.beforeEach((to, from, next) => {
         path: '/api/user'
       })
     }
-  }
-  else {
+  } else {
     next();
   }
 })
