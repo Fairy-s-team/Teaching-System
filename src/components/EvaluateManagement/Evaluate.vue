@@ -14,9 +14,6 @@
     components: {
       EvaluateNav,
       EvaluateContent
-    },
-    data() {
-      return {};
     }
   };
 </script>

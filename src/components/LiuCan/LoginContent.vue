@@ -5,90 +5,56 @@
     <div id="bottom_color">
       <!-- 页面书图片 -->
       <div id="book">
-        <img src="../../assets/book.png"/>
+        <img src="../../assets/book.png" />
       </div>
       <!-- 登录 -->
       <div id="information">
         <p id="logLabel">用户登录</p>
 
-        <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form">
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
           <!-- 用户名 -->
-          <el-row>
-            <el-col :span="20" :offset="1">
-              <el-form-item label="用户名：" prop="idNum">
-                <el-input
-                  v-model="form.idNum"
-                  size="medium"
-                  placeholder="请输入学号/教职工号"
-                  prefix-icon="el-icon-user"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <!-- 密码 -->
-          <el-row>
-            <el-col :span="20" :offset="1">
-              <el-form-item label="密码：" prop="password">
-                <el-input
-                  v-model="form.password"
-                  size="medium"
-                  placeholder="请输入密码"
-                  prefix-icon="el-icon-key"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <!-- 验证码 -->
-          <el-row>
-            <el-col :span="20" :offset="1">
-              <el-form-item label="验证码：" prop="mycode">
-                <el-col :span="12">
-                  <el-input v-model="form.mycode" size="medium" placeholder="请输入验证码"></el-input>
-                </el-col>
-                <el-col :span="10" :offset="2">
-                  <div @click="refreshCode()">
-                    <s-identify
-                      class="code"
-                      :fresh="flag"
-                      @makedCode="getMakedCode"
-                    ></s-identify>
-                  </div>
-                </el-col>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <!-- 单选框 -->
-          <el-row class="radioRow">
-            <el-col :span="20" :offset="1">
-              <el-form-item prop="identity">
-                <el-col :span="12">
-                  <el-radio
-                    label="0"
-                    v-model="form.identity"
-                  >教师
-                  </el-radio>
-                </el-col>
-                <el-col :span="12">
-                  <el-radio
-                    label="1"
-                    v-model="form.identity"
-                  >学生
-                  </el-radio>
-                </el-col>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row class="btnRow">
-            <el-col :span="20" :offset="1">
-              <el-form-item>
-                <el-button plain class="auth_login_btn" @click="login()">登录</el-button>
-              </el-form-item>
-              <label @click="gotolink" id="forgetBtn">
-                <small>忘记密码</small>
-              </label>
-            </el-col>
-          </el-row>
+          <el-form-item label="学号：" prop="userId" class="toTop">
+            <el-input
+              v-model="form.userId"
+              size="medium"
+              placeholder="请输入职工号/学号"
+              style="width:300px;"
+              prefix-icon="el-icon-user"
+              maxlength="10"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="密码：" prop="password" class="toTop">
+            <el-input
+              v-model="form.password"
+              size="medium"
+              placeholder="请输入密码"
+              prefix-icon="el-icon-key"
+              style="width:300px;"
+              maxlength="10"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="验证码：" prop="mycode" class="toTop">
+            <el-input
+              v-model="form.mycode"
+              size="medium"
+              maxlength="4"
+              placeholder="请输入验证码"
+              style="width:150px;"
+            ></el-input>
+            <div class="code" @click="refreshCode()">
+              <s-identify
+                :fresh="flag"
+                @makedCode="getMakedCode"
+                style="margin-right:132px;float:right;margin-top:2px"
+              ></s-identify>
+            </div>
+
+            <el-button type="submit" size="small" class="auth_login_btn" @click="login()">登录</el-button>
+          </el-form-item>
         </el-form>
+        <label @click="gotolink" id="forgetPassLabel">
+          <small>忘记密码</small>
+        </label>
       </div>
     </div>
   </div>
@@ -105,40 +71,72 @@
       "s-identify": Code
     },
     data() {
+      var checkUserId = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error("请输入学号/教职工号"));
+        } else {
+          var numberReg = /^[0-9]*$/;
+          if (!numberReg.test(value)) {
+            callback(new Error("学号或职工号只能为数字！"));
+          } else {
+            callback();
+          }
+        }
+      };
+
+      var checkPassword = (rule, value, callback) => {
+        var noChangeReg = /^[0-9]*$/;
+        var hasChangeReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+        if (!noChangeReg.test(value) && !hasChangeReg.test(value)) {
+          callback(new Error("密码输入格式有误"));
+        } else {
+          callback();
+        }
+      };
+
+      var checkVertify = (rule, value, callback) => {
+        var vertifyCodeReg = /^[0-9]*$/;
+        if (!vertifyCodeReg.test(value)) {
+          callback(new Error("验证码只能为数字！"));
+        } else {
+          callback();
+        }
+      };
+
       return {
         form: {
-          idNum: "", //学号或教职工号
+          userId: "", //学号或教职工号
           password: "", //密码
-          identity: "", //获取到的用户身份  【教师0  学生1】
           mycode: "" //用户输入的验证码
         },
         flag: true, //该值变化，就会触发验证码刷新
         code: "", //刷新后生成的验证码
-        loginData: [], //获取到的json数据
+
+        userData: [], //获取到的json数据
         isUser: false, //判断是否存在这个用户
+
+        //输入规则
         rules: {
-          idNum: [
-            {
-              required: true,
-              message: "请输入用户名",
-              trigger: "blur"
-            }
+          userId: [
+            { required: true, validator: checkUserId, trigger: "blur" },
+            { max: 10, min: 5, message: "学号或教职工号最少5位" }
           ],
           password: [
-            {
-              required: true,
-              message: "请输入密码",
-              trigger: "blur"
-            }
+            { required: true, message: "请输入密码！", trigger: "blur" },
+            { max: 10, message: "密码长度不超过10位！" },
+            { validator: checkPassword, trigger: "blur" }
           ],
           mycode: [
-            {
-              required: true,
-              message: "请输入验证码",
-              trigger: "blur"
-            }
+            { required: true, message: "请输入验证码!", trigger: "blur" },
+            { validator: checkVertify, trigger: "blur" }
           ]
         },
+
+        //如果登陆成功了，获取当前的用户，用于判断
+        currentUser: {
+          userId: "",
+          status: ""
+        }
       };
     },
     mounted() {
@@ -152,75 +150,78 @@
       },
       //获取json数据
       getData() {
-        console.log("要开始获取数据了哦");
         this.$http
-          .get("../../static/login.json")
+          .get("../../static/user.json")
           .then(res => {
             console.log(res.data);
-            this.loginData = res.data;
+            this.userData = res.data;
           })
           .catch(err => {
             console.log(err);
           });
       },
-      //验证
-      vertify() {
-        console.log(this.form.idNum);
-        for (var i = 0; i < this.loginData.length; ++i) {
-          console.log(this.loginData[i].idNum);
-          if (this.form.idNum == this.loginData[i].idNum) {
-            let pwd = this.loginData[i].password;
-            let loginPwd = this.form.password
-            let idRank = this.form.identity;
-            let loginIdRank = this.loginData[i].identity;
-            if (pwd == loginPwd && idRank == loginIdRank) {
-              this.isUser = true;
-            } else {
-              this.isUser = false;
-            }
-            break;
-          }
-        }
+
+      //登录失败返回信息并且清空表单
+      failLogin(mes) {
+        this.$message({
+          message: mes,
+          type: "warning"
+        });
+        this.$refs.formRef.resetFields();
+        this.refreshCode();
       },
-      //检查输入框是否为空
 
       //登录
       login() {
-        this.vertify();
-        if (this.form.mycode == this.code && this.isUser) {
+        this.$refs.formRef.validate(valid => {
+          if (valid) {
+            if (this.form.mycode == this.code) {
+              for (var i = 0; i < this.userData.length; i++) {
+                if (
+                  this.form.userId == this.userData[i].userId &&
+                  this.form.password == this.userData[i].password
+                ) {
+                  this.currentUser.userId = this.userData[i].userId;
+                  this.currentUser.status = this.userData[i].status;
+                  this.isUser = true; //如果信息匹配那么设置isUser为真
+                  break;
+                }
+              }
+            } else {
+              this.failLogin("验证码错误！");
+            }
+          } else {
+            this.failLogin("请检查输入格式是否正确！");
+          }
+        });
+
+        //是用户就跳到下一界面
+        if (this.isUser) {
           this.$message({
-            message: "登陆成功！",
+            message: "登录成功！",
             type: "success"
           });
-          if (this.form.identity == "1") {
-            // 学生---更新store存储用户的登录信息和状态
-            store.state.loginData[0].userNum = this.form.idNum;
-            store.state.loginData[0].token = true;
-            this.$router.replace("/api/rank");
-          } else if (this.form.identity == "0") {
-            // 教师---更新store存储用户的登录信息和状态
-            store.state.loginData[1].userNum = this.form.idNum;
-            store.state.loginData[1].token = true;
-            this.$router.replace("/api/document");
-          }
-        } else if (this.form.mycode != this.code) {
-          this.$message({
-            message: "验证码错误，请重新登录！",
-            type: "warning"
-          });
-          this.form.mycode = "";
-          this.refreshCode();
-        } else {
-          this.$message({
-            message: "密码错误或没有该用户，请重新登录！",
-            type: "warning"
-          });
+          //重置isUser
           this.isUser = false;
-          this.form.password = "";
-          this.form.idNum = "";
-          this.form.identity = "";
-          this.form.mycode = "";
-          this.refreshCode();
+
+          // 更新store存储用户的登录信息和状态
+          store.state.loginData.userId = this.currentUser.userId;
+          store.state.loginData.token = true;
+
+          // 跳到下一个界面，老师到老师，学生到学生，管理员。。。。
+          if (this.currentUser.status == "教师") {
+            console.log("即将跳到教师界面");
+            this.$router.push("/api/document");
+          } else if (this.currentUser.status == "学生") {
+            console.log("即将跳到学生界面");
+            this.$router.push("/api/rank");
+          } else {
+            console.log("即将跳到管理员界面");
+            // ------------------ 这里需要补充跳转 -------------------
+
+          }
+        } else {
+          this.failLogin("登录失败！");
         }
       },
 

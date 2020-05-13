@@ -86,7 +86,7 @@
     data() {
       return {
         // store存储当前登录的用户
-        currentUser: store.state.loginData[0].userNum,
+        currentUser: store.state.loginData.userId,
         // 路由传值传过来的评价的信息
         rankTeacherInfo: this.$route.query,
         // 记录最后的结果
@@ -107,8 +107,8 @@
     methods: {
       signOutEvent() {
         // 退出登录
-        store.state.loginData[0].userNum = '未登录',
-        store.state.loginData[0].token = false,
+        store.state.loginData.userId = '未登录',
+        store.state.loginData.token = false,
         this.$router.replace("/api/user");
       },
       getQuestionsData() {

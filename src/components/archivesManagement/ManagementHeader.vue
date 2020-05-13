@@ -120,8 +120,8 @@ export default {
     },
     signOutEvent() {
       // 退出登录
-      (store.state.loginData[1].userNum = "未登录"),
-        (store.state.loginData[1].token = false),
+      (store.state.loginData.userId = "未登录"),
+        (store.state.loginData.token = false),
         this.$router.replace("/api/user");
     }
   }

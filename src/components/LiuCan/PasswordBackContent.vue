@@ -1,9 +1,9 @@
 <template>
   <div id="passbackContent">
     <div id="passbackInformation">
-      <el-form ref="form" :model="form" label-width="100px" :rules="rules">
-        <el-form-item label="用户名：" prop="userName">
-          <el-input v-model="form.userName" maxlength="10"></el-input>
+      <el-form ref="formRef" :model="form" label-width="100px" :rules="rules">
+        <el-form-item label="学/职工号：" prop="userId">
+          <el-input v-model="form.userId" maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="身份证号：" prop="idCard">
           <el-input v-model="form.idCard" maxlength="20"></el-input>
@@ -15,23 +15,18 @@
           <el-input v-model="form.vertifyPass" show-password maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="验证码：" prop="mycode">
-          <div @click="refreshCode" id="codeBlock">
-            <s-identify
-              :fresh="flag"
-              @makedCode="getMakedCode"
-              id="pwdBackCode"
-            ></s-identify>
+          <div id="codeBlock" @click="refreshCode()">
+            <s-identify :fresh="flag" @makedCode="getMakedCode"></s-identify>
           </div>
-          <div id="codeBtn">
-            <el-input
-              v-model="form.mycode"
-            ></el-input>
-          </div>
-
+          <el-input
+            v-model="form.mycode"
+            maxlength="4"
+            style="width:200px;padding-left:50px;float:right;"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" id="submit" @click="save()">提交</el-button>
-          <el-button type="primary" id="backToLogin" @click="gotolink">返回登录</el-button>
+          <el-button type="primary" style="margin-left:50px;" @click="save()">保存</el-button>
+          <el-button type="primary" style="margin-left:70px;" @click="gotolink">返回首页</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,6 +41,51 @@
       "s-identify": Code
     },
     data() {
+      var checkUserId = (rule, value, callback) => {
+        var numberReg = /^[0-9]*$/;
+        if (!numberReg.test(value)) {
+          callback(new Error("学号或职工号只能为数字！"));
+        } else {
+          callback();
+        }
+      };
+
+      var checkIdCard = (rule, value, callback) => {
+        var idcard1Reg = /^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$/; //第一代15位身份证
+        var idcard2Reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/; //第二代18位身份证
+        console.log("idcard被调用");
+        if (!idcard1Reg.test(value) && !idcard2Reg.test(value)) {
+          callback("身份证无效！");
+        } else {
+          callback();
+        }
+      };
+
+      var checkPass = (rule, value, callback) => {
+        var passReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+        if (!passReg.test(value)) {
+          callback("新密码至少六位且必须由字母和数字组成！");
+        } else {
+          callback();
+        }
+      };
+
+      var vertifyPass = (rule, value, callback) => {
+        if (value !== this.form.newPassword) {
+          callback(new Error("两次输入密码不一致!"));
+        } else {
+          callback();
+        }
+      };
+
+      var checkVertify = (rule, value, callback) => {
+        var vertifyCodeReg = /^[0-9]*$/;
+        if (!vertifyCodeReg.test(value)) {
+          callback(new Error("验证码只能为数字！"));
+        } else {
+          callback();
+        }
+      };
       return {
         form: {
           userName: "", //用户名
@@ -56,39 +96,46 @@
         },
         flag: true, //该值变化，就会触发验证码刷新
         code: "", //刷新后的验证码的值
-        passData: [],
-        isUser: false,
+        userData: [], //用户信息
+        isUser: false,//是否为用户
+        //输入检查规则
         rules: {
-          userName: [
-            {required: true, message: "请输入用户名", trigger: "blur"}
+          userId: [
+            { required: true, message: "请输入学号或职工号", trigger: "blur" },
+            { max: 10, min: 5, message: "学号或教职工号最少5位" },
+            { validator: checkUserId, trigger: "blur" }
           ],
           idCard: [
             {
               required: true,
               message: "请输入身份证号",
               trigger: "blur"
-            }
+            },
+            { validator: checkIdCard, trigger: "blur" }
           ],
           newPassword: [
             {
               required: true,
               message: "请输入新密码",
               trigger: "blur"
-            }
+            },
+            { validator: checkPass, trigger: "blur" }
           ],
           vertifyPass: [
             {
               required: true,
               message: "请输入确认密码",
               trigger: "blur"
-            }
+            },
+            { validator: vertifyPass, trigger: "blur" }
           ],
           mycode: [
             {
               required: true,
               message: "请输入验证码",
               trigger: "blur"
-            }
+            },
+            { validator: checkVertify, trigger: "blur" }
           ]
         }
       };
@@ -101,88 +148,78 @@
       getData() {
         console.log("要开始获取数据了哦");
         this.$http
-          .get("../../static/passback.json")
+          .get("../../static/user.json")
           .then(res => {
             console.log(res.data);
-            this.passData = res.data;
+            this.userData = res.data;
           })
           .catch(err => {
             console.log(err);
           });
       },
 
+      //验证是否为用户
       vertify() {
-        for (var i = 0; i < this.passData.length; i++) {
-          console.log(this.passData[i].name);
-          console.log(this.form.userName);
+        for (var i = 0; i < this.userData.length; i++) {
+          console.log(this.userData[i].userId);
+          console.log(this.form.userId);
           if (
-            this.form.userName == this.passData[i].name &&
-            this.form.idCard == this.passData[i].idCard
+            this.form.userId == this.userData[i].userId &&
+            this.form.idCard == this.userData[i].identity
           ) {
             this.isUser = true;
             break;
           }
         }
       },
-      //清空输入框
-      clearAll() {
-        this.form.userName = "";
-        this.form.idCard = "";
-        this.form.newPassword = "";
-        this.form.vertifyPass = "";
-        this.form.mycode = "";
+
+      //登录失败返回信息并且清空表单
+      failLogin(mes) {
+        this.$message({
+          message: mes,
+          type: "warning"
+        });
+        this.$refs.formRef.resetFields();
         this.refreshCode();
-      },
-      //检查密码格式
-      isPassword() {
-        var reg = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)\S{6,10}$/; //密码由字母和数字组成且长度不小于6,不大于10
-        var result = reg.test(this.form.newPassword);
-        console.log(result);
-        return result;
       },
 
       //保存
       save() {
-        this.vertify();
-        if (!this.isUser) {
-          this.$message({
-            message: "修改失败！用户名或身份证错误！",
-            type: "warning"
-          });
-          this.clearAll();
-        } else {
-          if (!this.isPassword()) {
-            this.clearAll();
-            this.$message({
-              message: "修改失败！密码必须6-10位，且由数字和字母构成！",
-              type: "warning"
-            });
+        this.$refs.formRef.validate(valid => {
+          if (valid) {
+            if (this.form.mycode == this.code) {
+              this.vertify();
+              if (this.isUser) {
+                // 提交修改后的表单然后显示修改成功
 
-            this.isUser = false;
-          } else if (this.form.newPassword != this.form.vertifyPass) {
-            this.$message({
-              message: "修改失败！密码和确认密码必须一样！",
-              type: "warning"
-            });
+                //  axios
+                // .post(url, this.editObj)
+                // .then(function(response) {
+                //   console.log(response);
+                //   alert(msg);
+                //   this.getData();
+                // })
+                // .catch(function(error) {
+                //   console.log(error);
+                // });
+                this.$message({
+                  message: "修改成功！",
+                  type: "success"
+                });
+                this.isUser = false;
 
-            this.clearAll();
-            this.isUser = false;
-          } else if (this.form.mycode != this.code) {
-            this.$message({
-              message: "验证码错误！",
-              type: "warning"
-            });
-            alert("验证码错误！");
-            this.form.mycode = "";
-            this.refreshCode();
+                // 跳回登录界面
+                this.gotolink();
+              } else {
+                this.failLogin("用户不存在或身份证号错误！");
+              }
+            } else {
+              this.failLogin("验证码错误！");
+            }
           } else {
-            this.$message({
-              message: "密码修改成功！",
-              type: "success"
-            });
-            this.gotolink();
+            this.failLogin("请检查您的输入！");
           }
-        }
+        });
       },
       // 返回登录界面
       gotolink() {
@@ -195,6 +232,7 @@
       //得到验证码的值并赋给this.code
       getMakedCode(code) {
         this.code = code;
+        console.log("code" + code);
         console.log("getMakedCode:", this.code);
       }
     }

@@ -1,7 +1,7 @@
 /* 登录 */
 #login {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: cadetblue;
   background: -webkit-linear-gradient(top, #ffffff, #76a3c7) no-repeat;
   position: absolute;
@@ -14,40 +14,13 @@
   margin-top: 0px;
 }
 
-#form .el-form-item {
-  height: 35px;
-  position: relative;
-  padding-top: 0;
-  top: -10px;
-}
-
-.radioRow {
-  position: relative;
-  top: -10px;
-}
-
-.btnRow {
-  position: relative;
-  top: -20px;
-}
-
-#forgetBtn {
-  position: relative;
-  top: -20px;
-  left: 86%;
-  color: #409eff;
-  cursor: pointer;
-}
-
 #bottom_color {
-  background-color: #8ba1b2;
-  background: rbga(138, 161, 178, 1);
+  background:rgb(157,175,189,0.2);
   filter: "progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F000000,endcolorstr=#7F000000)";
-  width: 80%;
-  height: 62vh;
+  width: 1200px;
+  height: 450px;
   padding: 0px;
   margin: 135px auto;
-  position: relative;
 }
 
 #book {
@@ -59,25 +32,23 @@
   float: left;
   border-radius: 5px;
 }
-
 #information {
-  width: 40%;
-  height: 350px;
+  width: 480px;
   background-color: white;
-  top: 50px;
-  left: 45%;
-  position: absolute;
+  margin-top: 50px;
+  margin-left: 150px;
+  position: relative;
+  padding: 4vh 0 12vh 0;
   float: left;
   border-radius: 5px;
-  box-shadow: 5px 5px 5px #5d5f61;
+  box-shadow: 5px 5px 5px 0 #8ba1b2;
 }
 
 
 #logLabel {
   font-size: 20px;
   text-align: center;
-  padding-top: 17px;
-  padding-bottom: 23px;
+  margin-bottom: 2vh;
 }
 
 
@@ -99,18 +70,30 @@
 }
 
 .auth_login_btn {
+  color: rgb(119, 116, 116);
+  font-size: 18px;
+  border-radius: 3px;
+  border: 1px solid;
   width: 300px;
+  border-color: #ccc;
+  border-radius: 4px;
   background-color: transparent;
+  margin-top: 20px;
+}
+.auth_login_btn:hover {
+  border-color: #409eff;
+  color: #409eff;
 }
 
 .code {
-  margin-top: 2px;
-  position: relative;
-  left: 12px;
+  float: right;
+  margin-right: -50px;
+  margin-top: 0px;
   width: 60px;
   height: 30px;
   cursor: pointer;
 }
+
 
 
 /*  登录底部*/
@@ -123,6 +106,7 @@
 }
 
 
+
 /*头部，两用  */
 #loginHeader {
   width: 100%;
@@ -133,7 +117,7 @@
 #schoolLogo {
   width: 200px;
   height: 50px;
-  padding-left: 200px;
+  padding-left: 160px;
   padding-top: 10px;
 }
 
@@ -148,6 +132,7 @@
   position: relative;
   font-family: Britannic;
   font-weight: bold;
+  
 }
 
 /* 找回密码页面 */
@@ -162,40 +147,11 @@
 /* 找回密码内容 */
 #passbackContent {
   width: 600px;
-  height: 510px;
+  height: 500px;
   background-color: #edf6ff;
   box-shadow: 0 0 5 0 #84a5d0 inset;
-  margin: 0px auto;
-  margin-top: 130px;
+  margin: 150px auto;
   border-radius: 10px;
-  padding: 7px 100px;
-}
-
-#submit {
-  margin-left: 50px;
-  position: relative;
-  top: -10px;
-}
-
-#backToLogin {
-  margin-left: 70px;
-  position: relative;
-  top: -10px;
-}
-
-#pwdBackCode {
-  display: inline;
-  cursor: pointer;
-}
-
-#codeBtn {
-  width: 250px;
-}
-
-#codeBlock {
-  width: 112px;
-  height: 38px;
-  float: right;
 }
 
 #passbackInformation {
@@ -227,10 +183,21 @@
   margin-top: 20px;
 }
 
+.toTop{
+  padding-top:0px;
+}
+#forgetPassLabel{
+  position: relative;
+  top: 60px;
+  left: 72%;
+  color: #409eff;
+  cursor: pointer;
+}
 
-
-
-
-
-
-
+#codeBlock {
+  width: 112px;
+  height: 38px;
+  float: left;
+  cursor: pointer;
+  
+}

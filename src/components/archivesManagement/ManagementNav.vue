@@ -39,7 +39,7 @@
     data() {
       return {
         // store存储当前登录的用户
-        currentUser: store.state.loginData[1].userNum
+        currentUser: store.state.loginData.userId
       }
     },
   }

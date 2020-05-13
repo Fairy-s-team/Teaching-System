@@ -27,7 +27,7 @@
     data() {
       return {
         // store存储当前登录的用户
-        currentUser: store.state.loginData[0].userNum
+        currentUser: store.state.loginData.userId
       };
     }
   };

@@ -92,14 +92,9 @@ router.beforeEach((to, from, next) => {
   // 判断该路由是否需要登录权限
   if (to.meta.requireAuth) {
     // 查询本地存储信息是否已经登录
-    if (store.state.loginData[0].token === true) {
-      console.log("学生登录了");
-      next();
-    } else if (store.state.loginData[1].token === true) {
-      console.log("教师登录了");
+    if (store.state.loginData.token === true) {
       next();
     }
-    // --------------------------- 这里老师和学生需要做区分 ---------------------
     else {
       // 未登录跳转至登录页面
       next({
