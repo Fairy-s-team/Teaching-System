@@ -1,0 +1,30 @@
+[
+    {
+        "userId": "2017110389",
+        "userName": "张小盒",
+        "password": "lingyun66",
+        "identity": "510623197808210523",
+        "status": "学生"
+    },
+    {
+        "userId": "2017110360",
+        "userName": "谢晓华",
+        "password": "zhouyu66",
+        "identity": "510623197808210522",
+        "status": "教师"
+    },
+    {
+      "userId": "201901",
+      "userName": "亥依秋",
+      "password": "666",
+      "identity": "510623197808210524",
+      "status": "学生"
+    },
+    {
+        "userId": "2017110392",
+        "userName": "彭晓辉",
+        "password": "liucan66",
+        "identity": "510623197808210521",
+        "status": "管理员"
+    }
+]

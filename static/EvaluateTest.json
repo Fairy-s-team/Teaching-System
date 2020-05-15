@@ -1,0 +1,98 @@
+[
+  {
+    "teacherId": "2017110303",
+    "teacherName": "崔凌云",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "2017110324",
+    "teacherName": "刘灿",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "2017110358",
+    "teacherName": "周渝",
+    "courseId": "111",
+    "courseName": "Java"
+  },
+  {
+    "teacherId": "2017110327",
+    "teacherName": "梁丹琼",
+    "courseId": "111",
+    "courseName": "C"
+  },
+  {
+    "teacherId": "2017110337",
+    "teacherName": "王涵琪",
+    "courseId": "111",
+    "courseName": "Java"
+  },
+  {
+    "teacherId": "6",
+    "teacherName": "吴文娇",
+    "courseId": "111",
+    "courseName": "C"
+  },
+  {
+    "teacherId": "7",
+    "teacherName": "张三",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "8",
+    "teacherName": "李四",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "9",
+    "teacherName": "王五",
+    "courseId": "111",
+    "courseName": "Java"
+  },
+  {
+    "teacherId": "10",
+    "teacherName": "赵二",
+    "courseId": "111",
+    "courseName": "C"
+  },
+  {
+    "teacherId": "11",
+    "teacherName": "孙五",
+    "courseId": "111",
+    "courseName": "Java"
+  },
+  {
+    "teacherId": "12",
+    "teacherName": "张三",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "13",
+    "teacherName": "李四",
+    "courseId": "111",
+    "courseName": "数据结构"
+  },
+  {
+    "teacherId": "14",
+    "teacherName": "王五",
+    "courseId": "111",
+    "courseName": "Java"
+  },
+  {
+    "teacherId": "15",
+    "teacherName": "赵二",
+    "courseId": "111",
+    "courseName": "C"
+  },
+  {
+    "teacherId": "16",
+    "teacherName": "孙五",
+    "courseId": "111",
+    "courseName": "Java"
+  }
+]
