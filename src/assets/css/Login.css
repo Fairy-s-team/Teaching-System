@@ -38,7 +38,7 @@
   margin-top: 50px;
   margin-left: 150px;
   position: relative;
-  padding: 4vh 0 12vh 0;
+  padding: 4vh 0 6vh 0;
   float: left;
   border-radius: 5px;
   box-shadow: 5px 5px 5px 0 #8ba1b2;
@@ -79,6 +79,7 @@
   border-radius: 4px;
   background-color: transparent;
   margin-top: 20px;
+  margin-left: 100px;
 }
 .auth_login_btn:hover {
   border-color: #409eff;
@@ -188,10 +189,19 @@
 }
 #forgetPassLabel{
   position: relative;
-  top: 60px;
+  top: 10px;
   left: 72%;
   color: #409eff;
   cursor: pointer;
+}
+#masterLabel {
+  position: relative;
+  top: 10px;
+  left: 9%;
+  color: #409eff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
 }
 
 #codeBlock {

@@ -1,17 +1,17 @@
 <template>
   <div id="header">
     <div class="FormBlock">
-      <el-form :inline="true" :model="form" label-width="80px" class="demo-form-inline">
+      <!-- <el-form :inline="true" :model="tableData" label-width="80px" class="demo-form-inline">
         <el-form-item label="任课老师" class="selectBlock">
           <el-autocomplete
             class="inline-input"
-            v-model="form.teacherName"
+            v-model="tableData.teacherName"
             :fetch-suggestions="querySearch"
             placeholder="请输入教师姓名"
           ></el-autocomplete>
         </el-form-item>
         <el-form-item label="课程名" class="selectBlock">
-          <el-select v-model="form.courseName" placeholder="请选择课程名">
+          <el-select v-model="tableData.courseName" placeholder="请选择课程名">
             <el-option
               v-for="item in classNameOptions"
               :key="item.value"
@@ -23,7 +23,7 @@
         <el-form-item>
           <el-button type="primary" @click="onSubmit" id="search">搜索</el-button>
         </el-form-item>
-      </el-form>
+      </el-form> -->
       <div id="signOut">
         <el-popconfirm title="确定要退出吗？" @onConfirm="signOutEvent">
           <el-button slot="reference" type="text" id="signOutBtn">
@@ -42,20 +42,22 @@
     name: "EvaluateHeader",
     data() {
       return {
-        form: {
-          teacherName: "",
-          courseName: ""
-        },
-        classNameOptions: [
-          {value: '0', label: 'C'},
-          {value: '1', label: '数据结构'},
-          {value: '2', label: 'C++'},
-          {value: '3', label: 'Java'}
-        ]
+        // form: [],
+        // classNameOptions: [
+        //   {value: '0', label: 'C'},
+        //   {value: '1', label: '数据结构'},
+        //   {value: '2', label: 'C++'},
+        //   {value: '3', label: 'Java'}
+        // ]
       };
     },
+    props: {
+      tableData: {
+        type: Array
+      }
+    },
     methods: {
-      querySearch(queryString, cb) {
+      // querySearch(queryString, cb) {
         // this.$http({
         //   url: this.$http.adornUrl("#"),
         //   method: "post",
@@ -70,11 +72,11 @@
         //   //最后将数据 cb() 回去  返回到 autocomplete 组件中
         //   cb(data.data);
         // });
-      },
-      onSubmit() {
-        console.log("开始查找..");
-        console.log(this.form);
-      },
+      // },
+      // onSubmit() {
+      //   console.log("开始查找..");
+      //   console.log(this.tableData);
+      // },
       signOutEvent() {
         // 退出登录
         store.state.loginData.userId = '未登录',

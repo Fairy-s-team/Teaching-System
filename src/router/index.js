@@ -5,10 +5,12 @@ import AddArchives from '@/components/archivesManagement/AddArchives'
 import EditArchives from '@/components/archivesManagement/EditArchives'
 import DelArchives from '@/components/archivesManagement/DelArchives'
 import MContentAdd from '@/components/archivesManagement/MContentAdd'
-import Login from '@/components/LiuCan/Login'
-import PasswordBack from '@/components/LiuCan/PasswordBack'
+import Login from '@/components/Login/Login'
+import PasswordBack from '@/components/Login/PasswordBack'
 import Evaluate from '@/components/EvaluateManagement/Evaluate'
 import EvaluateDetail from '@/components/EvaluateManagement/EvaluateDetail'
+import NormalTeacher from '@/components/NormalTeacher/NormalTeacher'
+import NormalTeacherRank from '@/components/NormalTeacher/NormalTeacherRank'
 import store from '../store'
 // const loginpage = resolve => require(['@/components/Login'],resolve)
 
@@ -68,7 +70,7 @@ let router = new Router({
       name: 'Rank',
       component: Evaluate,
       meta: {
-        requireAuth: true,
+        requireAuth: false,
       },
     },
     {
@@ -77,6 +79,22 @@ let router = new Router({
       component: EvaluateDetail,
       meta: {
         requireAuth: true,
+      },
+    },
+    {
+      path: '/api/normalteacher',
+      name: 'NormalTeacher',
+      component: NormalTeacher,
+      meta: {
+        requireAuth: false,
+      },
+    },
+    {
+      path: '/api/myRank',
+      name: 'NormalTeacherRank',
+      component: NormalTeacherRank,
+      meta: {
+        requireAuth: false,
       },
     }
   ]

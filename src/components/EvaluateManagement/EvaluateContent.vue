@@ -1,13 +1,13 @@
 <template>
   <div id="content">
-    <EvaluateHeader/>
+    <EvaluateHeader :info = "tableData" />
     <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       stripe
       id="evaluateTable"
     >
       <el-table-column prop="teacherName" label="教师姓名" width="320" align="center"></el-table-column>
-      <el-table-column prop="crouseName" label="课程名" width="320" align="center"></el-table-column>
+      <el-table-column prop="courseName" label="课程名" width="320" align="center"></el-table-column>
       <el-table-column prop="evaluate" label="去评价" width="320" align="center">
         <template slot-scope="scope">
           <el-button
@@ -42,6 +42,7 @@
   import EvaluateHeader from "./EvaluateHeader";
   import EvaluateFooter from "./EvaluateFooter";
   import EvaluateDetail from "./EvaluateDetail";
+  import store from '@/store';
 
   export default {
     name: "EvaluateContent",
@@ -58,7 +59,8 @@
         pageSize: 7, // 每页的数据条数
         currentPage: 1, // 当前页
         paginationShow: true, // 用来强制刷新分页组件
-        selectDataId: "-1" // 当前选中需要编辑的教职工编号
+        selectDataId: "-1" ,// 当前选中需要编辑的教职工编号
+        currentUser: store.state.loginData.userId
       };
     },
     mounted() {
@@ -68,21 +70,20 @@
       evaluateRow(row) {
         console.log("跳转到对目标教师及其课程进行评价的页面！");
         this.selectDataId = row.teacherId;
-        let editable = true;
-        this.$emit("startEvaluate", editable, row); // 向父组件传值
         // 打开评价页的时候传值
         this.$router.push({
           path: "/rank/detail",
           query: {
+            teacherId: row.teacherId,
             teacherName: row.teacherName,
+            courseId: row.courseId,
             courseName: row.courseName,
           }
         });
       },
       getData() {
-        console.log("要开始获取数据了哦");
         this.$http
-          .get("../../static/EvaluateTest.json")
+          .get("http://localhost:8080/api/class/"+this.currentUser)
           .then(res => {
             console.log(res.data);
             this.tableData = res.data;

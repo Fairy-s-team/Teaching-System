@@ -13,6 +13,13 @@
         "identity": "510623197808210522",
         "status": "教师"
     },
+  {
+    "userId": "201901",
+    "userName": "律如柏",
+    "password": "666",
+    "identity": "510623197808210524",
+    "status": "学生"
+  },
     {
         "userId": "2017110392",
         "userName": "彭晓辉",

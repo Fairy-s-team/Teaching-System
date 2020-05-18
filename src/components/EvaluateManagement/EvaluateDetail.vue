@@ -18,9 +18,9 @@
     </div>
     <div id="detail-right-content">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item 
-          :to="{ path: '/api/rank?id='+this.currentUser }"
-           class="detail-nav"
+        <el-breadcrumb-item
+          :to="{ path: '/api/rank' }"
+          class="detail-nav"
         >首页
         </el-breadcrumb-item>
         <el-breadcrumb-item class="detail-nav">
@@ -45,11 +45,11 @@
             <el-form-item
               v-for="item in evaluateQuestions"
               :key="item.question_id"
-              :label="(item.question_id+1)+'. '+item.question"
+              :label="(item.question_id)+'. '+item.question"
               :value="item.question_id"
               class="detail-rankItem"
             >
-              <el-radio-group v-model="rankAnswer[item.question_id]">
+              <el-radio-group v-model="rankAnswer[item.question_id-1]">
                 <el-radio
                   v-for="option in chooseOptions"
                   :key="option.value"
@@ -58,7 +58,7 @@
                 ></el-radio>
               </el-radio-group>
             </el-form-item>
-           
+
             <el-button id="subAndreturnBtn" type="primary" @click="onSubmit()">提交</el-button>
             <!-- this.resultTemp1,this.resultTemp2,this.resultTemp3,this.resultTemp4,this.resultTemp5,this.resultTemp6 -->
           </el-form>
@@ -66,7 +66,7 @@
       </div>
       <EvaluateFooter/>
     </div>
-    
+
   </div>
 </template>
 
@@ -75,6 +75,7 @@
   import EvaluateHeader from "./EvaluateHeader";
   import EvaluateFooter from "./EvaluateFooter";
   import store from '@/store';
+  import Vue from 'vue';
 
   export default {
     name: "EvaluateDetail",
@@ -89,8 +90,18 @@
         currentUser: store.state.loginData.userId,
         // 路由传值传过来的评价的信息
         rankTeacherInfo: this.$route.query,
-        // 记录最后的结果
-        avgResult: 0,
+        // 最后上传的对象
+        resObj: {
+          stuId: "",
+          teacherId: "",
+          courseId: "",
+          rankQ1: "",
+          rankQ2: "",
+          rankQ3: "",
+          rankQ4: "",
+          rankQ5: "",
+          rankQ6: "",
+        },
         rankAnswer: [],
         evaluateQuestions: [],
         chooseOptions: [
@@ -108,13 +119,13 @@
       signOutEvent() {
         // 退出登录
         store.state.loginData.userId = '未登录',
-        store.state.loginData.token = false,
-        this.$router.replace("/api/user");
+          store.state.loginData.token = false,
+          this.$router.replace("/api/user");
       },
       getQuestionsData() {
         console.log("EvaluateDetail要开始获取数据了哦");
         this.$http
-          .get("../../static/EvaluateQuestion.json")
+          .get("http://localhost:8080/question")
           .then(res => {
             console.log(res.data);
             this.evaluateQuestions = res.data;
@@ -160,24 +171,46 @@
         }
 
         if (isRight) {
-          // 计算分值并上传数据
-          var res = 0;
-          for(var i = 0; i<this.evaluateQuestions.length; i++) {
-            let score = this.rankToScore(rankAns[i]);
-            res += parseInt(score);
-            console.log(res);
-          }
-          this.avgResult = res / this.evaluateQuestions.length;
-          console.log("总评是："+this.avgResult);
+          // 输出看看结果
+          // console.log("评价学生id：" + this.currentUser);
+          // console.log("评价教师id：" + this.rankTeacherInfo.teacherId);
+          // console.log("评价课程id：" + this.rankTeacherInfo.courseId);
+          // console.log("评价结果：");
+          // for(var i = 0; i<this.evaluateQuestions.length; i++) {
+          //   let score = this.rankToScore(rankAns[i]);
+          //   console.log("这是第"+(i+1)+"个问题的答案的分值："+score);
+          // }
 
-          // 上传总评
+          // 对象赋值
+          this.resObj.stuId = this.currentUser;
+          this.resObj.teacherId = this.rankTeacherInfo.teacherId;
+          this.resObj.courseId = this.rankTeacherInfo.courseId;
+          this.resObj.rankQ1 = this.rankToScore(rankAns[0]);
+          this.resObj.rankQ2 = this.rankToScore(rankAns[1]);
+          this.resObj.rankQ3 = this.rankToScore(rankAns[2]);
+          this.resObj.rankQ4 = this.rankToScore(rankAns[3]);
+          this.resObj.rankQ5 = this.rankToScore(rankAns[4]);
+          this.resObj.rankQ6 = this.rankToScore(rankAns[5]);
 
-          this.$router.push({
-            path: "/api/rank",
-            query: {
-              id: this.currentUser
-            }
-          });
+          console.log(this.resObj);
+
+          // post 请求上传数据
+          this.$http
+            .post("http://localhost:8080/api/rank", this.resObj)
+            .then(function(response) {
+              console.log(response);
+              Vue.prototype.$message({
+                message: "提交成功",
+                type: "success"
+              })
+            })
+            .catch(function(error) {
+              Vue.prototype.$message({
+                message: "提交失败",
+                type: "error"
+              })
+              console.log(error);
+            });
         }
       }
     }
@@ -188,4 +221,3 @@
 <style scoped>
   @import "../../assets/css/Evaluate.css";
 </style>
-

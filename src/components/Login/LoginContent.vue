@@ -31,6 +31,7 @@
               prefix-icon="el-icon-key"
               style="width:300px;"
               maxlength="10"
+              type="password"
             ></el-input>
           </el-form-item>
           <el-form-item label="验证码：" prop="mycode" class="toTop">
@@ -48,13 +49,13 @@
                 style="margin-right:132px;float:right;margin-top:2px"
               ></s-identify>
             </div>
-
-            <el-button type="submit" size="small" class="auth_login_btn" @click="login()">登录</el-button>
           </el-form-item>
+          <el-button type="submit" size="small" class="auth_login_btn" @click="login()">登录</el-button>
         </el-form>
         <label @click="gotolink" id="forgetPassLabel">
           <small>忘记密码</small>
         </label>
+        <a id="masterLabel" href="http://localhost:8089">管理员登录</a>
       </div>
     </div>
   </div>
@@ -105,8 +106,8 @@
 
       return {
         form: {
-          userId: "", //学号或教职工号
-          password: "", //密码
+          userId: "2019110324", //学号或教职工号
+          password: "ldq123456", //密码
           mycode: "" //用户输入的验证码
         },
         flag: true, //该值变化，就会触发验证码刷新
@@ -141,7 +142,7 @@
     },
     mounted() {
       this.flag = !this.flag;
-      this.getData();
+      //  this.getData(); //从user.json获取用户
     },
     methods: {
       //忘记密码去到忘记密码页面
@@ -173,20 +174,65 @@
 
       //登录
       login() {
-        this.$refs.formRef.validate(valid => {
+        this.$refs.formRef.validate(async valid => {
           if (valid) {
             if (this.form.mycode == this.code) {
-              for (var i = 0; i < this.userData.length; i++) {
-                if (
-                  this.form.userId == this.userData[i].userId &&
-                  this.form.password == this.userData[i].password
-                ) {
-                  this.currentUser.userId = this.userData[i].userId;
-                  this.currentUser.status = this.userData[i].status;
-                  this.isUser = true; //如果信息匹配那么设置isUser为真
-                  break;
-                }
+              //  for (var i = 0; i < this.userData.length; i++) {
+              //    if (
+              //      this.form.userId == this.userData[i].userId &&
+              //      this.form.password == this.userData[i].password
+              //    ) {
+              //      this.currentUser.userId = this.userData[i].userId;
+              //      this.currentUser.status = this.userData[i].status;
+              //      this.isUser = true; //如果信息匹配那么设置isUser为真
+              //      break;
+              //    }
+              //  }
+
+              let loginForm = {
+                userId:this.form.userId,
+                password:this.form.password
               }
+              // 向后台发送用户id和密码进行认证
+              const {data:res} = await this.$http.post('login',loginForm)
+              // console.log(res);
+              if (res.status === 200) {
+                this.currentUser.userId = res.info.userId;
+                this.currentUser.status = res.info.status;
+                this.isUser = true; //如果信息匹配那么设置isUser为真
+
+                //是用户就跳到下一界面
+                if (this.isUser) {
+                  this.$message({
+                    message: "登录成功！",
+                    type: "success"
+                  });
+                  //重置isUser
+                  this.isUser = false;
+
+                  // 更新store存储用户的登录信息和状态
+                  store.state.loginData.userId = this.currentUser.userId;
+                  store.state.loginData.token = true;
+
+                  console.log(this.currentUser.status);
+
+                  // 跳到下一个界面，老师到老师，学生到学生，管理员。。。。
+                  if (this.currentUser.status == "管理员") {
+                    console.log("即将跳到教务处老师的档案管理界面");
+                    this.$router.push("/api/document");
+                  } else if (this.currentUser.status == "学生") {
+                    console.log("即将跳到学生评价界面");
+                    this.$router.push("/api/rank");
+                  } else if (this.currentUser.status == "教师") {
+                    console.log("即将跳到任课教师界面");
+                    this.$router.replace("/api/normalteacher");
+                  } else {
+                    console.log("啥也不是");
+                  }
+                } else {
+                  this.failLogin("登录失败！");
+                }
+             }
             } else {
               this.failLogin("验证码错误！");
             }
@@ -194,35 +240,6 @@
             this.failLogin("请检查输入格式是否正确！");
           }
         });
-
-        //是用户就跳到下一界面
-        if (this.isUser) {
-          this.$message({
-            message: "登录成功！",
-            type: "success"
-          });
-          //重置isUser
-          this.isUser = false;
-
-          // 更新store存储用户的登录信息和状态
-          store.state.loginData.userId = this.currentUser.userId;
-          store.state.loginData.token = true;
-
-          // 跳到下一个界面，老师到老师，学生到学生，管理员。。。。
-          if (this.currentUser.status == "教师") {
-            console.log("即将跳到教师界面");
-            this.$router.push("/api/document");
-          } else if (this.currentUser.status == "学生") {
-            console.log("即将跳到学生界面");
-            this.$router.push("/api/rank");
-          } else {
-            console.log("即将跳到管理员界面");
-            // ------------------ 这里需要补充跳转 -------------------
-
-          }
-        } else {
-          this.failLogin("登录失败！");
-        }
       },
 
       //刷新验证码

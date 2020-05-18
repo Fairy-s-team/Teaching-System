@@ -88,7 +88,7 @@
       };
       return {
         form: {
-          userName: "", //用户名
+          userId: "", //用户名
           idCard: "", //身份证号
           newPassword: "", //新密码
           vertifyPass: "", //确认密码
@@ -185,34 +185,41 @@
 
       //保存
       save() {
-        this.$refs.formRef.validate(valid => {
+        this.$refs.formRef.validate(async valid => {
           if (valid) {
             if (this.form.mycode == this.code) {
-              this.vertify();
-              if (this.isUser) {
-                // 提交修改后的表单然后显示修改成功
-
-                //  axios
-                // .post(url, this.editObj)
-                // .then(function(response) {
-                //   console.log(response);
-                //   alert(msg);
-                //   this.getData();
-                // })
-                // .catch(function(error) {
-                //   console.log(error);
-                // });
-                this.$message({
-                  message: "修改成功！",
-                  type: "success"
-                });
-                this.isUser = false;
-
-                // 跳回登录界面
-                this.gotolink();
+              const { data } = await this.$http.post(`users/changePwd`, this.form);
+              console.log(data);
+              if (!data.status) {
+                this.$message.error(data.msg);
               } else {
-                this.failLogin("用户不存在或身份证号错误！");
+                this.$message.success("修改密码成功！");
               }
+              // this.vertify();
+              // if (this.isUser) {
+              //   // 提交修改后的表单然后显示修改成功
+
+              //   //  axios
+              //   // .post(url, this.editObj)
+              //   // .then(function(response) {
+              //   //   console.log(response);
+              //   //   alert(msg);
+              //   //   this.getData();
+              //   // })
+              //   // .catch(function(error) {
+              //   //   console.log(error);
+              //   // });
+              //   this.$message({
+              //     message: "修改成功！",
+              //     type: "success"
+              //   });
+              //   this.isUser = false;
+
+              //   // 跳回登录界面
+              //   this.gotolink();
+              // } else {
+              //   this.failLogin("用户不存在或身份证号错误！");
+              // }
             } else {
               this.failLogin("验证码错误！");
             }

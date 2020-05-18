@@ -8,8 +8,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import store from './store/index';
+import echarts from "echarts"
 
+Vue.prototype.$echarts = echarts
 Vue.prototype.$http = axios
+
+// 设置反向代理，前端请求默认发送到 http://localhost:8081/
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://localhost:8081/'
 
 Vue.use(ElementUI)
 Vue.use(store)
